@@ -1,0 +1,58 @@
+<!--index.wxml-->
+<view class="page">
+  <view class="page_bd">
+    <scroll-view catchtap="scrollClick" class="msg_scroll" style="height:{{scrollHeight}}" scroll-top="{{scrollTop}}" scroll-y scroll-with-animation>
+
+      <block wx:for="{{chatList}}" wx:key="id">
+        <view class="chat_block chat_block_right">
+          <view class="chat_avatar">
+            <image mode="aspectFit" src="{{userInfo.avatarUrl || '/images/user_avatar.png'}}"></image>
+          </view>
+          <view class="chat_cont">
+            <view wx:if="{{item.msg_type==='text'}}">
+              <block wx:for="{{item.text_list}}" wx:key="{{index}}">
+                <text wx:if="{{item.msgType==='text'}}">{{item.msgCont}}</text>
+                <image wx:if="{{item.msgType==='emoji'}}" src="{{item.msgImage}}" class="emoji"></image>
+              </block>
+            </view>
+            <view class="img_msg" wx:if="{{item.msg_type==='image'}}">
+              <image catchtap="previewImage" id="{{item.msg_image.src}}" src="{{item.msg_image.src}}" style="width:100px;height:{{item.msg_image.height*100/item.msg_image.width}}px"></image>
+            </view>
+          </view>
+        </view>
+      </block>
+      
+    </scroll-view>
+
+    <view class="msg_fixed">
+      <view class="msgbox">
+        <image catchtap="toggleVoice" src="/images/chat/voice.png"></image>
+        <input value="{{msg}}" bindinput="inputMsg" bindfocus="inputFocus" class="msgbox_input" maxlength="999" cursor-spacing="10" bindconfirm="confirmMsg" bindblur="blurInput" confirm-type="发送" />
+        <image catchtap="toggleEmojis" src="/images/chat/emotion-o.png"></image>
+        <image catchtap="toggleFiles" src="/images/chat/plus.png"></image>
+        <image catchtap="sendMsg" src="/images/chat/send.png"></image>
+      </view>
+
+      <view wx:if="{{showEmojis}}" class="emojis_box">
+        <view class="emoji_wrap" wx:for="{{emojiList}}" wx:key="key">
+          <image catchtap="clickEmoji" src="{{item.img}}" data-key="{{item.key}}" class="emoji"></image>
+        </view>
+        <view class="emoji_wrap">
+          <text catchtap="sendMsg" class="emoji_send">发送</text>
+        </view>
+      </view>
+
+      <view wx:if="{{showFiles}}" class="files_box">
+        <view class="files_wrap">
+          <view catchtap="sendPic" class="files_icon">
+            <image src="/images/chat/image.png"></image>
+          </view>
+          <text>图片</text>
+        </view>
+      </view>
+
+    </view>
+
+
+  </view>
+</view>
